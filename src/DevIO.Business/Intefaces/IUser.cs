@@ -11,6 +11,6 @@ namespace DevIO.Business.Intefaces
         string GetUserEmail();
         bool IsAuthenticated();
         bool IsInRole(string role);
-        IEnumerable<Claim> GetClaimsIdentity();
+        IEnumerable<Claim> GetClaimsIdentity(); 
     }
 }
