@@ -1,14 +1,18 @@
 ﻿using AutoMapper;
 using DevIO.API.Dtos;
+using DevIO.API.Extensions;
 using DevIO.Business.Intefaces;
 using DevIO.Business.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevIO.API.Controllers
 {
+    [Authorize] // define a necessidade de autenticação para acessar os métodos
     [Route("api/fornecedor")]
     public class FornecedorController : MainController
     {
@@ -29,6 +33,7 @@ namespace DevIO.API.Controllers
             _enderecoRepository = enderecoRepository;
         }
 
+        //[AllowAnonymous] //permite acesso sem autenticação
         [HttpGet]
         public async Task<IEnumerable<FornecedorDto>> ObterTodos()
         {
@@ -48,6 +53,7 @@ namespace DevIO.API.Controllers
             return Ok(fornecedor);
         }
 
+        [ClaimsAuthorize("Fornecedor","Adicionar")] // verifica se tem permissão para realizar o post de acordo com a tabela: AspNetUserClaims. Config em extensions/CustomAuthorize.cs
         [HttpPost]
         public async Task<ActionResult<FornecedorDto>> Adicionar(FornecedorDto fornecedorDto)
         {
@@ -63,6 +69,7 @@ namespace DevIO.API.Controllers
             //return Ok(fornecedor);
         }
 
+        [ClaimsAuthorize("Fornecedor", "Atualizar")] //verifica se tem permissão para realizar o put de acordo com a tabela: AspNetUserClaims. Config em extensions/CustomAuthorize.cs
         [HttpPut("{id:guid}")]
         public async Task<ActionResult<FornecedorDto>> Atualizar(Guid id, FornecedorDto fornecedorDto)
         {
@@ -85,6 +92,7 @@ namespace DevIO.API.Controllers
             //return Ok(fornecedor);
         }
 
+        [ClaimsAuthorize("Fornecedor", "Excluir")] //verifica se tem permissão para realizar o delete de acordo com a tabela: AspNetUserClaims. Config em extensions/CustomAuthorize.cs
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult<FornecedorDto>> Excluir(Guid id)
         {
@@ -112,6 +120,7 @@ namespace DevIO.API.Controllers
             return Ok(enderecoDto);
         }
 
+        [ClaimsAuthorize("Fornecedor", "Atualizar")] //verifica se tem permissão para realizar o put de acordo com a tabela: AspNetUserClaims. Config em extensions/CustomAuthorize.cs
         [HttpPut("atualizar-endereco/{id:guid}")]
         public async Task<ActionResult<EnderecoDto>> AtualizarEndereco(Guid id, EnderecoDto enderecoDto)
         {

@@ -1,16 +1,20 @@
 ﻿using AutoMapper;
 using DevIO.API.Dtos;
+using DevIO.API.Extensions;
 using DevIO.Business.Intefaces;
 using DevIO.Business.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevIO.API.Controllers
 {
+    [Authorize] // define a necessidade de autenticação para acessar os métodos
     [Route("api/produto")]
     public class ProdutoController : MainController
     {
@@ -45,6 +49,7 @@ namespace DevIO.API.Controllers
             return Ok(produtoDto);
         }
 
+        [ClaimsAuthorize("Produto", "Adicionar")] // verifica se tem permissão para realizar o post de acordo com a tabela: AspNetUserClaims. Config em extensions/CustomAuthorize.cs
         [HttpPost] //envio de imagem normal
         public async Task<ActionResult<ProdutoDto>> Adicionar(ProdutoDto produtoDto)
         {
@@ -63,6 +68,7 @@ namespace DevIO.API.Controllers
             return CustomResponse(produtoDto);
         }
 
+        [ClaimsAuthorize("Produto", "Atualizar")] // verifica se tem permissão para realizar o put de acordo com a tabela: AspNetUserClaims. Config em extensions/CustomAuthorize.cs
         [HttpPut("{id:guid}")]
         public async Task<ActionResult<ProdutoDto>> Atualizar(Guid id, ProdutoDto produtoDto)
         {
@@ -97,6 +103,7 @@ namespace DevIO.API.Controllers
             return CustomResponse(produtoDto);
         }
 
+        [ClaimsAuthorize("Produto", "Adicionar")] // verifica se tem permissão para realizar o post de acordo com a tabela: AspNetUserClaims. Config em extensions/CustomAuthorize.cs
         [HttpPost("adicionar")] //envio de imagem grande
         public async Task<ActionResult<ProdutoDto>> AdicionarAlternativo(ProdutoImagemDto produtoImagemDto)
         {
@@ -124,6 +131,7 @@ namespace DevIO.API.Controllers
             return Ok(file);
         }
 
+        [ClaimsAuthorize("Produto", "Excluir")] // verifica se tem permissão para realizar o delete de acordo com a tabela: AspNetUserClaims. Config em extensions/CustomAuthorize.cs
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult<ProdutoDto>> Excluir(Guid id)
         {

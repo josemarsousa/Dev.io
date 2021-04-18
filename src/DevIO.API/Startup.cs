@@ -33,6 +33,8 @@ namespace DevIO.API
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddIdentityConfiguration(Configuration);
+
             services.AddControllers()
                 .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling =
                     Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -62,6 +64,9 @@ namespace DevIO.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "APICompleta v1"));
             }
+
+            //Authentication Identity
+            app.UseAuthentication();
 
             //Criado em Configuration/ApiConfig.cs
             app.UseMvcConfiguration();
