@@ -1,4 +1,5 @@
-﻿using DevIO.API.Dtos;
+﻿using DevIO.API.Controllers;
+using DevIO.API.Dtos;
 using DevIO.API.Extensions;
 using DevIO.Business.Intefaces;
 using Microsoft.AspNetCore.Identity;
@@ -12,9 +13,10 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DevIO.API.Controllers
+namespace DevIO.API.V2.Controllers
 {
-    [Route("api")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}")]
     public class AuthController : MainController
     {
         private readonly SignInManager<IdentityUser> _signInManager;

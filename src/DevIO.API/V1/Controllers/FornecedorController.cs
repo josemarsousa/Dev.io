@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DevIO.API.Controllers;
 using DevIO.API.Dtos;
 using DevIO.API.Extensions;
 using DevIO.Business.Intefaces;
@@ -10,10 +11,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DevIO.API.Controllers
+namespace DevIO.API.V1.Controllers
 {
     [Authorize] // define a necessidade de autenticação para acessar os métodos
-    [Route("api/fornecedor")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/fornecedor")]
     public class FornecedorController : MainController
     {
         private readonly IFornecedorRepository _fornecedorRepository;
@@ -38,7 +40,7 @@ namespace DevIO.API.Controllers
         [HttpGet]
         public async Task<IEnumerable<FornecedorDto>> ObterTodos()
         {
-            var fornecedores = _mapper.Map<IEnumerable<FornecedorDto>>( await _fornecedorRepository.ObterTodos());
+            var fornecedores = _mapper.Map<IEnumerable<FornecedorDto>>(await _fornecedorRepository.ObterTodos());
 
             return fornecedores;
         }
@@ -54,7 +56,7 @@ namespace DevIO.API.Controllers
             return Ok(fornecedor);
         }
 
-        [ClaimsAuthorize("Fornecedor","Adicionar")] // verifica se tem permissão para realizar o post de acordo com a tabela: AspNetUserClaims. Config em extensions/CustomAuthorize.cs
+        [ClaimsAuthorize("Fornecedor", "Adicionar")] // verifica se tem permissão para realizar o post de acordo com a tabela: AspNetUserClaims. Config em extensions/CustomAuthorize.cs
         [HttpPost]
         public async Task<ActionResult<FornecedorDto>> Adicionar(FornecedorDto fornecedorDto)
         {

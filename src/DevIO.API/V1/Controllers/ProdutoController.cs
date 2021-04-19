@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DevIO.API.Controllers;
 using DevIO.API.Dtos;
 using DevIO.API.Extensions;
 using DevIO.Business.Intefaces;
@@ -12,10 +13,11 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DevIO.API.Controllers
+namespace DevIO.API.V1.Controllers
 {
     [Authorize] // define a necessidade de autenticação para acessar os métodos
-    [Route("api/produto")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/produto")]
     public class ProdutoController : MainController
     {
         private readonly IProdutoRepository _produtoRepository;
@@ -57,7 +59,7 @@ namespace DevIO.API.Controllers
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             var imagemNome = Guid.NewGuid() + "_" + produtoDto.Imagem;
-            if(!UploadArquivo(produtoDto.ImagemUpload, imagemNome))
+            if (!UploadArquivo(produtoDto.ImagemUpload, imagemNome))
             {
                 return CustomResponse();
             }
@@ -73,20 +75,20 @@ namespace DevIO.API.Controllers
         [HttpPut("{id:guid}")]
         public async Task<ActionResult<ProdutoDto>> Atualizar(Guid id, ProdutoDto produtoDto)
         {
-            if(id != produtoDto.Id)
+            if (id != produtoDto.Id)
             {
                 NotificarErro("O id informado não é o mesmo que foi passado na query");
                 return CustomResponse(produtoDto);
             }
 
-            var produtoAtualizacao =  _mapper.Map<ProdutoDto>(await _produtoRepository.ObterProdutoFornecedor(id));
+            var produtoAtualizacao = _mapper.Map<ProdutoDto>(await _produtoRepository.ObterProdutoFornecedor(id));
             produtoDto.Imagem = produtoAtualizacao.Imagem;
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            if(produtoDto.ImagemUpload != null)
+            if (produtoDto.ImagemUpload != null)
             {
                 var imagemNome = Guid.NewGuid() + "_" + produtoDto.Imagem;
-                if(!UploadArquivo(produtoDto.ImagemUpload, imagemNome))
+                if (!UploadArquivo(produtoDto.ImagemUpload, imagemNome))
                 {
                     return CustomResponse(ModelState);
                 }
@@ -147,7 +149,7 @@ namespace DevIO.API.Controllers
 
         private bool UploadArquivo(string arquivo, string imgNome)
         {
-            if(string.IsNullOrEmpty(arquivo))
+            if (string.IsNullOrEmpty(arquivo))
             {
                 //ModelState.AddModelError(string.Empty, "Forneça uma imagem para este produto!");
                 NotificarErro("Forneça uma imagem para este produto!");
