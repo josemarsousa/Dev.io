@@ -18,14 +18,25 @@ namespace DevIO.API.Configuration
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-            //Habilita o CORS pra tudo
+            //Habilita o CORS
             services.AddCors(options =>
             {
+                //Habilita o CORS pra tudo
                 options.AddPolicy("Development",
                     builder => builder.AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader());
                 //.AllowCredentials());
+
+                //Habilita o CORS para alguns methods e origins
+                options.AddPolicy("Production",
+                    builder =>
+                        builder
+                            .WithMethods("GET", "POST")
+                            .WithOrigins("https://localhost:5001", "https://meusite.com.br")
+                            .SetIsOriginAllowedToAllowWildcardSubdomains()
+                            //.WithHeaders(HeaderNames.ContentType, "x-custom-header")
+                            .AllowAnyHeader());
             });
 
             return services;
@@ -34,7 +45,7 @@ namespace DevIO.API.Configuration
         public static IApplicationBuilder UseMvcConfiguration(this IApplicationBuilder app)
         {
             //Usando CORS definido acima
-            app.UseCors("Development");
+            //app.UseCors("Development"); //startup
 
             return app;
         }

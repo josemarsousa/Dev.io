@@ -60,9 +60,16 @@ namespace DevIO.API
         {
             if (env.IsDevelopment())
             {
+                app.UseCors("Development");
+
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "APICompleta v1"));
+            }
+            else
+            {
+                app.UseCors("Production");
+                app.UseHsts();
             }
 
             //Authentication Identity
