@@ -23,17 +23,19 @@ namespace DevIO.API.V2.Controllers
         [HttpGet]
         public string Valor()
         {
+            //teste para elmah.io usando o middleware - ExceptionMiddleware.cs
             //throw new Exception("Error");
 
-            try
-            {
-                var i = 0;
-                var result = 42 / i;
-            }
-            catch (DivideByZeroException e)
-            {
-                e.Ship(HttpContext); //Ship() enviar log pro elmah.io
-            }
+            //teste para elmah.io
+            //try
+            //{
+            //    var i = 0;
+            //    var result = 42 / i;
+            //}
+            //catch (DivideByZeroException e)
+            //{
+            //    e.Ship(HttpContext); //Ship() enviar log pro elmah.io
+            //}
 
             //log do asp.net - config para se usar no elmah.io comentada em LoggerConfig.cs
             _logger.LogTrace("Log de Trace"); //uso em ambiente dev - desabilitada como default 

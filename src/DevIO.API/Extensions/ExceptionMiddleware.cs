@@ -29,6 +29,7 @@ namespace DevIO.API.Extensions
             }
         }
 
+        //async await funciona até a versão elmah 3.6.63
         private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             await exception.ShipAsync(context); // enviando para o elmah.io
