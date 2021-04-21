@@ -1,4 +1,5 @@
 using DevIO.API.Configuration;
+using DevIO.API.Extensions;
 using DevIO.Data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -56,8 +57,11 @@ namespace DevIO.API
             //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "APICompleta", Version = "v1" });
             //});
 
-            //Swagger SwaggerConfig.cs
+            //Swagger LoogerConfig.cs
             services.AddSwaggerConfig();
+
+            //Logger elmah.io - LoogerConfig.cs
+            services.AddLoggingConfiguration();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,7 +79,10 @@ namespace DevIO.API
 
                 //Swagger SwaggerConfig.cs
                 app.UseSwaggerConfig(provider);
-                
+
+                //Logger elmah.io - LoogerConfig.cs
+                app.UseLoggingConfiguration();
+
             }
             else
             {
@@ -85,6 +92,9 @@ namespace DevIO.API
 
             //Authentication Identity
             app.UseAuthentication();
+
+            //Middleware criada para pegar os erros sem tratamento - config para enviar pro elmah.io
+            app.UseMiddleware<ExceptionMiddleware>();
 
             //Criado em Configuration/ApiConfig.cs
             app.UseMvcConfiguration();
