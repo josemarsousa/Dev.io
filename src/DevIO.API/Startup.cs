@@ -3,19 +3,11 @@ using DevIO.API.Extensions;
 using DevIO.Data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DevIO.API
 {
@@ -76,13 +68,6 @@ namespace DevIO.API
                 //Movido para SwaggerConfig.cs
                 //app.UseSwagger();
                 //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
-
-                //Swagger SwaggerConfig.cs
-                app.UseSwaggerConfig(provider);
-
-                //Logger elmah.io - LoogerConfig.cs
-                app.UseLoggingConfiguration();
-
             }
             else
             {
@@ -109,6 +94,12 @@ namespace DevIO.API
             {
                 endpoints.MapControllers();
             });
+
+            //Swagger SwaggerConfig.cs
+            app.UseSwaggerConfig(provider);
+
+            //Logger elmah.io - LoogerConfig.cs
+            app.UseLoggingConfiguration();
         }
     }
 }
